@@ -10,7 +10,7 @@ from nltk.stem import PorterStemmer # preprocessing bahasa inggris
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory  # preprocessing
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory #preprocessing
 import string # ya buat string
-
+# rujukan stopwords bahasa indonesia "https://yunusmuhammad007.medium.com/text-preprocessing-menggunakan-pandas-nltk-dan-sastrawi-untuk-large-dataset-5fb3c0a8857
 
 stemmer = StemmerFactory().create_stemmer()  # Object stemmer
 remover = StopWordRemoverFactory().create_stop_word_remover()  # objek stopword
@@ -18,7 +18,7 @@ translator = str.maketrans('', '', string.punctuation)
 
 def stemmerEN(text):
     porter = PorterStemmer()
-    stop = set(stopwords.words('english'))
+    stop = set(stopwords.words('indonesian'))
     text = text.lower()
     text = [i for i in text.lower().split() if i not in stop]
     text = ' '.join(text)
@@ -46,7 +46,7 @@ class Engine:
         self.test_set.append(word)
 
     def process_score(self):
-        stopWords = stopwords.words('english')
+        stopWords = stopwords.words('indonesian')
         vectorizer = CountVectorizer()
 
         transformer = TfidfTransformer()

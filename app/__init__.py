@@ -1,11 +1,11 @@
-from flask import Flask
-from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-import os
+from flask import Flask #ambil library flask framework
+from flask_cors import CORS #ambil library cors untuk pemangglan request GET POST PUT dsb
+from flask_sqlalchemy import SQLAlchemy #ambil library flask_sqlalchemy untuk menyimpan data ke database sementara SQLAlchemy
+from flask_migrate import Migrate #ambil library flask_migrate untuk meng-update perubahan database
+import os #ambil library os untuk memanggil folder didalam framework flask
 
-project_dir = os.path.dirname(os.path.abspath(__file__))
-database_file = "sqlite:///{}".format(os.path.join(project_dir, "db/database.db"))
+project_dir = os.path.dirname(os.path.abspath(__file__)) #mengarahkan folder mana yang akan menyimpan file database
+database_file = "sqlite:///{}".format(os.path.join(project_dir, "db/database.db")) # penyimpanan database
 
 app = Flask(__name__)
 CORS(app)

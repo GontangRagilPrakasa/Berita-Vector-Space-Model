@@ -1,12 +1,12 @@
-from flask import request, jsonify
-from app import app
-from app.constant import RequestMethod
-from app.model.QueriesModel import Queries
-from app.model.DetailsModel import Details
-from app.module.Engine import preprocess, Engine
-import pandas as pd
-import os
-from numpy import math
+from flask import request, jsonify #ambil library json untuk konversi Datatable kebebntuk data json
+from app import app #ambil folder app dan semua isinya
+from app.constant import RequestMethod #ambil folder app -> constant dan ambil file RequestMethod
+from app.model.QueriesModel import Queries #ambil folder app -> model -> QueriesModel dan ambil file Queries
+from app.model.DetailsModel import Details #ambil folder app -> model -> DetailsModel dan ambil Details Queries
+from app.module.Engine import preprocess, Engine #ambil folder app -> Engine dan ambil Calss Engine dan fungsi preprocess
+import pandas as pd #ambil library pandas
+import os #ambil library os
+from numpy import math #ambil library numpy untuk konversi hasil score NAN
 
 
 @app.route("/", methods=RequestMethod.GET)
