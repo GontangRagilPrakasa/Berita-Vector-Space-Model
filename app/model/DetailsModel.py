@@ -5,26 +5,26 @@ class Details(db.Model):
     __tablename__ = "details"  # Define nama table
 
     id = db.Column(db.Integer, unique=True, primary_key=True, nullable=False)
-    document = db.Column(db.String, nullable=False)
-    label = db.Column(db.Integer, nullable=False)
-    score = db.Column(db.Float, nullable=False)
-    judul = db.Column(db.String, nullable=False)
-    media = db.Column(db.String, nullable=False)
-    kategori = db.Column(db.String, nullable=False)
-    query_id = db.Column(db.Integer, db.ForeignKey("queries.id"))
+    document    = db.Column(db.String, nullable=False)
+    label       = db.Column(db.Integer, nullable=False)
+    score       = db.Column(db.Float, nullable=False)
+    judul       = db.Column(db.String, nullable=False)
+    dosen_id    = db.Column(db.String, nullable=False)
+    dosen       = db.Column(db.String, nullable=False)
+    query_id    = db.Column(db.Integer, db.ForeignKey("queries.id"))
 
     def __init__(self, data):
-        document, label, score, judul, media, kategori = data
+        document, label, score, judul, dosen, dosen_id = data
         self.document = document
-        self.label = label
-        self.score = score
-        self.judul = judul
-        self.media = media
-        self.kategori = kategori
+        self.label      = label
+        self.score      = score
+        self.judul      = judul
+        self.dosen      = dosen
+        self.dosen_id   = dosen_id
         
 
     def __repr__(self):
-        return "<kategori: {}>".format(self.kategori)
+        return "<judul: {}>".format(self.judul)
 
     @staticmethod
     def getAll(queryId):
@@ -36,8 +36,8 @@ class Details(db.Model):
                 "document": data.document,
                 "label": data.label,
                 "score": data.score,
-                "media": data.media,
-                "kategori": data.kategori,
+                "dosen": data.dosen,
+                "dosen_id": data.dosen_id,
                 "judul": data.judul
             }
             result.append(obj)

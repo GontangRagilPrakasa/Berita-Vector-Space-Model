@@ -7,6 +7,7 @@ from app.module.Engine import preprocess, Engine #ambil folder app -> Engine dan
 import pandas as pd #ambil library pandas
 import os #ambil library os
 from numpy import math #ambil library numpy untuk konversi hasil score NAN
+from app.module.Query import read_all, read_with_params, insert, read_one
 
 
 @app.route("/", methods=RequestMethod.GET)
@@ -16,7 +17,19 @@ def index():
 
 @app.route("/search", methods=RequestMethod.GET_POST)
 def search():
-    dataset = pd.read_excel("app/db/databerita.xlsx")
+    # dataset = pd.read_excel("app/db/databerita.xlsx")
+   
+    dataset = " SELECT sys_dosen.dosen_name, mst_dosen_judul.dosen_judul, mst_dosen_judul.dosen_judul_processing, mst_dosen_judul.dosen_judul_id FROM mst_dosen_judul JOIN sys_dosen ON sys_dosen.dosen_id = mst_dosen_judul.dosen_id"
+    results = read_all(dataset)
+
+    temp_preprrocessing = []
+    temp_judul = []
+    temp_dosen = []
+    for doc in results :
+        temp_dosen.append(doc[0])
+        temp_judul.append(doc[1])
+        temp_preprrocessing.append(doc[2])
+   
     response = list()  # Define response
     if request.method == "POST":
         if "files" in request.files:
@@ -63,7 +76,7 @@ def search():
         return jsonify(response)
     else:
         engine = Engine()
-        docs = [str(x) for x in dataset['preprocessed_judul']]
+        docs = [str(x) for x in temp_preprrocessing]
         documentsName = list()
 
         for i, doc in enumerate(docs):
@@ -88,10 +101,8 @@ def search():
             datadf =pd.DataFrame(ScoreDf[i])
             datadf["Documents"] = ScoreDf["Documents"]
             datadf["Labels"] = labels
-            datadf['Judul'] = dataset['judul berita'].values
-            datadf['Media'] = dataset['media'].values
-            datadf['Kategori'] = dataset['kategori'].values
             dfListed.append(datadf.sort_values(by=[i], ascending=False))
+
         for i, df in enumerate(dfListed):
             dbQuery = Queries(queriesPre[i])
             for j in range(len(df["Documents"])):
@@ -102,20 +113,21 @@ def search():
                 document = df["Documents"][j]
                 label = int(df["Labels"][j])
                 score = score
-                judul = df["Judul"][j]
-                media = df["Media"][j]
-                kategori = df["Kategori"][j]
-                data = document, label, score , judul, media, kategori
-                details = Details(data)
-                
+                judul = temp_judul[j]
+                dosen = temp_dosen[j]
+                # kategori = df["Kategori"][j]
+                data = document, label, score , judul, dosen
+               
+                details = Details(data) 
                 dbQuery.details.append(details)
+
             dbQuery.save()
 
         for query in queriesPre:
             data = Queries.findByQueryName(query)
             response.append(data)
 
-        return jsonify(response)
+    return jsonify(response)
 
 
 @app.route("/test", methods=RequestMethod.GET)
