@@ -19,16 +19,20 @@ def index():
 def search():
     # dataset = pd.read_excel("app/db/databerita.xlsx")
    
-    dataset = " SELECT sys_dosen.dosen_name, mst_dosen_judul.dosen_judul, mst_dosen_judul.dosen_judul_processing, mst_dosen_judul.dosen_judul_id FROM mst_dosen_judul JOIN sys_dosen ON sys_dosen.dosen_id = mst_dosen_judul.dosen_id"
+    dataset = " SELECT sys_dosen.dosen_name, mst_dosen_judul.dosen_judul, mst_dosen_judul.dosen_judul_processing, mst_dosen_judul.dosen_judul_id , sys_dosen.dosen_id FROM mst_dosen_judul JOIN sys_dosen ON sys_dosen.dosen_id = mst_dosen_judul.dosen_id"
     results = read_all(dataset)
 
     temp_preprrocessing = []
     temp_judul = []
     temp_dosen = []
+    temp_dosen_judul = []
+    temp_dosen_id = []
     for doc in results :
         temp_dosen.append(doc[0])
         temp_judul.append(doc[1])
         temp_preprrocessing.append(doc[2])
+        temp_dosen_judul.append(doc[3])
+        temp_dosen_id.append(doc[4])
    
     response = list()  # Define response
     if request.method == "POST":
@@ -110,13 +114,14 @@ def search():
                     score = '0'
                 else:
                     score = float(df[queriesPre[i]][j])
-                document = df["Documents"][j]
-                label = int(df["Labels"][j])
-                score = score
-                judul = temp_judul[j]
-                dosen = temp_dosen[j]
-                # kategori = df["Kategori"][j]
-                data = document, label, score , judul, dosen
+                document            = df["Documents"][j]
+                label               = int(df["Labels"][j])
+                score               = score
+                judul               = temp_judul[j]
+                dosen               = temp_dosen[j]
+                dosen_judul         = temp_dosen_judul[j]
+                dosen_id            = temp_dosen_id[j]
+                data = document, label, score , judul, dosen, dosen_id,dosen_judul
                
                 details = Details(data) 
                 dbQuery.details.append(details)

@@ -11,16 +11,18 @@ class Details(db.Model):
     judul       = db.Column(db.String, nullable=False)
     dosen_id    = db.Column(db.String, nullable=False)
     dosen       = db.Column(db.String, nullable=False)
+    dosen_judul_id       = db.Column(db.String, nullable=False)
     query_id    = db.Column(db.Integer, db.ForeignKey("queries.id"))
 
     def __init__(self, data):
-        document, label, score, judul, dosen, dosen_id = data
-        self.document = document
-        self.label      = label
-        self.score      = score
-        self.judul      = judul
-        self.dosen      = dosen
-        self.dosen_id   = dosen_id
+        document, label, score, judul, dosen, dosen_id, dosen_judul_id = data
+        self.document       = document
+        self.label          = label
+        self.score          = score
+        self.judul          = judul
+        self.dosen          = dosen
+        self.dosen_id       = dosen_id
+        self.dosen_judul_id = dosen_judul_id
         
 
     def __repr__(self):
@@ -38,6 +40,7 @@ class Details(db.Model):
                 "score": data.score,
                 "dosen": data.dosen,
                 "dosen_id": data.dosen_id,
+                "dosen_judul_id": data.dosen_judul_id,
                 "judul": data.judul
             }
             result.append(obj)
